@@ -1,0 +1,133 @@
+/* ── Wrapper ────────────────────────────────────────────────── */
+.__ml_wrap {
+  position: relative !important;
+  display: inline-block !important;
+  width: 100% !important;
+}
+
+/* textarea uchun block */
+.__ml_wrap:has(textarea) {
+  display: block !important;
+}
+
+/* ── Translate tugmasi ──────────────────────────────────────── */
+.__ml_btn {
+  position: absolute !important;
+  right: 7px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 9999 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 24px !important;
+  height: 24px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  background: rgba(124, 106, 247, 0.12) !important;
+  border: 1px solid rgba(124, 106, 247, 0.35) !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  color: #9b8df5 !important;
+
+  opacity: 0.55 !important;
+  transition: opacity 0.15s, background 0.15s, transform 0.15s !important;
+  box-shadow: none !important;
+  outline: none !important;
+  font-size: 0 !important; /* svg dan tashqari hech narsa */
+}
+
+/* textarea uchun — tepaga */
+.__ml_wrap:has(textarea) .__ml_btn {
+  top: 8px !important;
+  transform: none !important;
+}
+
+.__ml_wrap:hover .__ml_btn,
+.__ml_wrap:focus-within .__ml_btn {
+  opacity: 1 !important;
+}
+
+.__ml_btn:hover {
+  background: rgba(124, 106, 247, 0.25) !important;
+  border-color: rgba(124, 106, 247, 0.7) !important;
+  color: #c4b5fd !important;
+  transform: translateY(-50%) scale(1.08) !important;
+}
+
+.__ml_wrap:has(textarea) .__ml_btn:hover {
+  transform: scale(1.08) !important;
+}
+
+.__ml_btn:active {
+  transform: translateY(-50%) scale(0.95) !important;
+}
+
+.__ml_wrap:has(textarea) .__ml_btn:active {
+  transform: scale(0.95) !important;
+}
+
+/* Loading animatsiya */
+.__ml_btn.__ml_loading {
+  opacity: 1 !important;
+  color: #a78bfa !important;
+  animation: __ml_spin 0.8s linear infinite !important;
+  cursor: wait !important;
+}
+
+@keyframes __ml_spin {
+  from { transform: translateY(-50%) rotate(0deg); }
+  to   { transform: translateY(-50%) rotate(360deg); }
+}
+
+.__ml_wrap:has(textarea) .__ml_btn.__ml_loading {
+  animation: __ml_spin_plain 0.8s linear infinite !important;
+}
+
+@keyframes __ml_spin_plain {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Input padding — tugma ustiga text chiqmasligi uchun */
+.__ml_wrap input[data-translate] {
+  padding-right: 38px !important;
+}
+
+.__ml_wrap textarea[data-translate] {
+  padding-right: 38px !important;
+}
+
+/* Tarjima kutilayotgan inputlar */
+.__ml_translating {
+  opacity: 0.5 !important;
+  transition: opacity 0.2s !important;
+}
+
+/* ── Notification ───────────────────────────────────────────── */
+#__ml_notice {
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  z-index: 2147483647 !important;
+  background: #1c1c28 !important;
+  color: #e2e2ee !important;
+  border: 1px solid #2e2e42 !important;
+  border-radius: 10px !important;
+  padding: 10px 16px !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  font-size: 13px !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4) !important;
+  opacity: 0 !important;
+  transform: translateY(8px) !important;
+  transition: opacity 0.25s, transform 0.25s !important;
+  pointer-events: none !important;
+  max-width: 280px !important;
+}
+
+#__ml_notice.show {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}

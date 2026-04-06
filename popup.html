@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <title>MultiLang Translator</title>
+  <style>
+    :root {
+      --bg: #0d0d14; --surface: #16161f; --surface2: #1e1e2a;
+      --border: #252535; --accent: #7c6af7; --accent2: #a78bfa;
+      --text: #e2e2ee; --muted: #5a5a7a; --success: #4ade80;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 260px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 13px;
+    }
+    .header {
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      width: 30px; height: 30px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; flex-shrink: 0;
+    }
+    .title { font-size: 13px; font-weight: 700; }
+    .subtitle { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+    .section { padding: 12px 14px; border-bottom: 1px solid var(--border); }
+    .section-title {
+      font-size: 10px; font-weight: 700; letter-spacing: .8px;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+    }
+
+    .code-block {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 7px; padding: 8px 10px;
+      font-family: 'Courier New', monospace; font-size: 11px;
+      color: var(--accent2); line-height: 1.75; white-space: pre;
+    }
+    .c { color: var(--muted); }
+    .g { color: #4ade80; }
+    .p { color: var(--accent); }
+
+    .tip {
+      font-size: 12px; color: var(--muted); line-height: 1.55;
+    }
+    .tip b { color: var(--text); }
+
+    .footer {
+      padding: 10px 14px;
+      font-size: 11px; color: var(--muted); text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">🌐</div>
+    <div>
+      <div class="title">MultiLang Translator</div>
+      <div class="subtitle">MyMemory API • Bepul</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Ishlatish</div>
+    <div class="code-block"><span class="c">&lt;!-- inputlarga qo'shing --&gt;</span>
+&lt;input <span class="p">data-translate</span>=<span class="g">"uz"</span> /&gt;
+&lt;input <span class="p">data-translate</span>=<span class="g">"en"</span> /&gt;
+&lt;input <span class="p">data-translate</span>=<span class="g">"ru"</span> /&gt;
+&lt;input <span class="p">data-translate</span>=<span class="g">"kk"</span> /&gt;</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Qanday ishlaydi</div>
+    <div class="tip">
+      Har bir <b>data-translate</b> inputning ichida o'ng tomonda <b>🌐</b> tugmasi chiqadi.<br><br>
+      Tugmani bosing → o'sha tildan qolgan barcha tillarga tarjima bo'ladi.
+    </div>
+  </div>
+
+  <div class="footer">
+    API: MyMemory • Limitlar: 5000 req/kun
+  </div>
+</body>
+</html>
