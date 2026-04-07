@@ -45,6 +45,15 @@ async function translateGoogle(text, fromLang, toLang) {
 // ============================================================
 const GOOGLE_CODE = { uz: "uz", ru: "ru", en: "en" };
 
+// kk/uzc dan uz ga o'tkazish
+async function toUzbek(text, fromLang) {
+  if (fromLang === "kk") return translateFromTo(text, "kaa_Latn", "uzn_Latn");
+  if (fromLang === "uzc")
+    return transliterateFromTo(text, "uz_cyrillic", "uz_latin");
+  if (fromLang === "uz") return text;
+  return translateGoogle(text, GOOGLE_CODE[fromLang] ?? fromLang, "uz");
+}
+
 // ============================================================
 //  Asosiy router
 //  Qoida: uz — markaziy til.
@@ -55,12 +64,8 @@ const GOOGLE_CODE = { uz: "uz", ru: "ru", en: "en" };
 //     → ru/en : Google
 // ============================================================
 async function translateText(text, fromLang, toLang) {
-  // 1. Manbani uz ga o'tkazish (agar kerak bo'lsa)
-  let uzText = text;
-  if (fromLang !== "uz") {
-    const googleFrom = GOOGLE_CODE[fromLang] ?? fromLang;
-    uzText = await translateGoogle(text, googleFrom, "uz");
-  }
+  // 1. Manbani uz ga o'tkazish (har qanday tildan)
+  const uzText = await toUzbek(text, fromLang);
 
   // 2. uz dan maqsad tilga
   if (toLang === "kk") {
