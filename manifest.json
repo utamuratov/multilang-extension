@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "MultiLang Auto Translator",
   "version": "1.3.0",
-  "description": "data-translate inputlarda inline tarjima tugmasi",
+  "description": "Bir nechta tillarni qo'llab-quvvatlaydigan avtomatik tarjimon",
   "permissions": [],
   "host_permissions": [
     "https://api.from-to.uz/*",
