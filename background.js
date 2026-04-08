@@ -1,5 +1,5 @@
 // ============================================================
-//  from-to.uz (bepul endpoint)
+//  from-to.uz
 // ============================================================
 async function translateFromTo(text, langFrom, langTo) {
   const res = await fetch("https://api.from-to.uz/api/v1/translate", {
@@ -28,7 +28,7 @@ async function transliterateFromTo(text, langFrom, langTo) {
 }
 
 // ============================================================
-//  Google Translate (ochiq)
+//  Google Translate
 // ============================================================
 async function translateGoogle(text, fromLang, toLang) {
   const url = `https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=${fromLang}&tl=${toLang}&q=${encodeURIComponent(text)}`;
@@ -41,45 +41,69 @@ async function translateGoogle(text, fromLang, toLang) {
 }
 
 // ============================================================
-//  Til → Google kodi
+//  Google til kodlari (ISO 639-1)
 // ============================================================
-const GOOGLE_CODE = { uz: "uz", ru: "ru", en: "en" };
+const GOOGLE_CODE = {
+  uz: "uz", ru: "ru", en: "en",
+  // Osiyo
+  zh: "zh-CN", ja: "ja", ko: "ko", ar: "ar", hi: "hi", fa: "fa",
+  tr: "tr", he: "he", th: "th", vi: "vi", id: "id", ms: "ms",
+  // Yevropa
+  de: "de", fr: "fr", es: "es", it: "it", pt: "pt", pl: "pl",
+  nl: "nl", sv: "sv", no: "no", da: "da", fi: "fi", cs: "cs",
+  sk: "sk", hu: "hu", ro: "ro", bg: "bg", hr: "hr", sr: "sr",
+  uk: "uk", be: "be", lt: "lt", lv: "lv", et: "et", el: "el",
+  // Markaziy Osiyo
+  kk: "kk", ky: "ky", tg: "tg", tk: "tk", az: "az",
+  // Boshqalar
+  sw: "sw", af: "af", ca: "ca", eu: "eu", gl: "gl",
+};
 
-// kk/uzc dan uz ga o'tkazish
+// ============================================================
+//  Yordamchi: til "from-to" tili ekanligini tekshirish
+// ============================================================
+const FROM_TO_LANGS = new Set(["kk", "uzc"]);
+
+// Ixtiyoriy tilni uz ga keltirish
 async function toUzbek(text, fromLang) {
-  if (fromLang === "kk") return translateFromTo(text, "kaa_Latn", "uzn_Latn");
-  if (fromLang === "uzc")
-    return transliterateFromTo(text, "uz_cyrillic", "uz_latin");
-  if (fromLang === "uz") return text;
-  return translateGoogle(text, GOOGLE_CODE[fromLang] ?? fromLang, "uz");
+  if (fromLang === "uz")  return text;
+  if (fromLang === "kk")  return translateFromTo(text, "kaa_Latn", "uzn_Latn");
+  if (fromLang === "uzc") return transliterateFromTo(text, "uz_cyrillic", "uz_latin");
+  // Google tili → uz
+  const gCode = GOOGLE_CODE[fromLang] ?? fromLang;
+  return translateGoogle(text, gCode, "uz");
+}
+
+// uz dan ixtiyoriy tilga
+async function fromUzbek(uzText, toLang) {
+  if (toLang === "uz")  return uzText;
+  if (toLang === "kk")  return translateFromTo(uzText, "uzn_Latn", "kaa_Latn");
+  if (toLang === "uzc") return transliterateFromTo(uzText, "uz_latin", "uz_cyrillic");
+  const gCode = GOOGLE_CODE[toLang] ?? toLang;
+  return translateGoogle(uzText, "uz", gCode);
 }
 
 // ============================================================
 //  Asosiy router
-//  Qoida: uz — markaziy til.
-//  1. Manba uz emas → avval Google orqali uz ga o'tkaziladi
-//  2. uz dan:
-//     → kk  : from-to.uz translate
-//     → uzc : from-to.uz transliterate
-//     → ru/en : Google
+//  - kk/uzc ishtirok etsa → uz orqali
+//  - Google tillari o'zaro → to'g'ridan-to'g'ri
 // ============================================================
 async function translateText(text, fromLang, toLang) {
-  // 1. Manbani uz ga o'tkazish (har qanday tildan)
-  const uzText = await toUzbek(text, fromLang);
+  const fromIsSpecial = FROM_TO_LANGS.has(fromLang);
+  const toIsSpecial   = FROM_TO_LANGS.has(toLang);
 
-  // 2. uz dan maqsad tilga
-  if (toLang === "kk") {
-    return translateFromTo(uzText, "uzn_Latn", "kaa_Latn");
+  if (fromIsSpecial || toIsSpecial) {
+    // uz orqali o'tkazish
+    const uzText = await toUzbek(text, fromLang);
+    return fromUzbek(uzText, toLang);
   }
-  if (toLang === "uzc") {
-    return transliterateFromTo(uzText, "uz_latin", "uz_cyrillic");
-  }
-  if (toLang === "uz") {
-    return uzText; // allaqachon uz da
-  }
-  // ru, en va boshqalar → Google
-  const googleTo = GOOGLE_CODE[toLang] ?? toLang;
-  return translateGoogle(uzText, "uz", googleTo);
+
+  // Ikkalasi ham Google tili → to'g'ridan-to'g'ri
+  const gFrom = fromLang === "uz" ? "uz" : (GOOGLE_CODE[fromLang] ?? fromLang);
+  const gTo   = toLang   === "uz" ? "uz" : (GOOGLE_CODE[toLang]   ?? toLang);
+
+  if (gFrom === gTo) return text;
+  return translateGoogle(text, gFrom, gTo);
 }
 
 // ============================================================
@@ -94,13 +118,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     targetLangs.map(async (toLang) => {
       const translated = await translateText(sourceText, sourceLang, toLang);
       return { lang: toLang, text: translated };
-    }),
+    })
   )
     .then((results) => {
       const data = {};
-      results.forEach((r) => {
-        data[r.lang] = r.text;
-      });
+      results.forEach((r) => { data[r.lang] = r.text; });
       sendResponse({ success: true, data });
     })
     .catch((err) => sendResponse({ success: false, error: err.message }));

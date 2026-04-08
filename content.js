@@ -3,7 +3,6 @@
   if (window.__multiLangInjected) return;
   window.__multiLangInjected = true;
 
-  const SUPPORTED_LANGS = ['uz', 'ru', 'kk', 'uzc'];
   const BTN_CLASS = '__ml_btn';
   const WRAP_CLASS = '__ml_wrap';
   let isTranslating = false;
@@ -11,8 +10,8 @@
   // ── Tugma yaratish ──────────────────────────────────────────
   function createButton(inputEl) {
     if (inputEl.parentElement?.classList.contains(WRAP_CLASS)) return;
-    const lang = inputEl.getAttribute('data-translate').toLowerCase();
-    if (!SUPPORTED_LANGS.includes(lang)) return;
+    const lang = inputEl.getAttribute('data-translate');
+    if (!lang) return;
 
     const wrap = document.createElement('div');
     wrap.className = WRAP_CLASS;
@@ -44,25 +43,6 @@
     });
   }
 
-  // ── localStorage dan token olish ────────────────────────────
-  function getAccessToken() {
-    try {
-      // Oddiy string token
-      const raw = localStorage.getItem('accessToken');
-      if (!raw) return null;
-
-      // Ba'zan JSON ichida saqlanishi mumkin: { token: "..." } yoki { access: "..." }
-      try {
-        const parsed = JSON.parse(raw);
-        return parsed.token ?? parsed.access ?? parsed.accessToken ?? raw;
-      } catch {
-        return raw; // to'g'ridan-to'g'ri string
-      }
-    } catch {
-      return null;
-    }
-  }
-
   // ── Tarjima logikasi ─────────────────────────────────────────
   async function handleTranslate(sourceEl, sourceLang) {
     if (isTranslating) return;
@@ -70,19 +50,14 @@
     const sourceText = sourceEl.value?.trim();
     if (!sourceText) { showNotice('⚠️ Matn bo\'sh'); return; }
 
-    const accessToken = getAccessToken();
-    if (!accessToken) {
-      showNotice('⚠️ accessToken topilmadi. Avval tizimga kiring.');
-      return;
-    }
-
+    // Sahifadagi barcha data-translate inputlarni yig'ish
     const inputsMap = {};
     document.querySelectorAll('[data-translate]').forEach(el => {
-      const l = el.getAttribute('data-translate').toLowerCase();
-      if (SUPPORTED_LANGS.includes(l)) inputsMap[l] = el;
+      const l = el.getAttribute('data-translate');
+      if (l) inputsMap[l] = el;
     });
 
-    const targetLangs = SUPPORTED_LANGS.filter(l => l !== sourceLang && inputsMap[l]);
+    const targetLangs = Object.keys(inputsMap).filter(l => l !== sourceLang);
     if (!targetLangs.length) { showNotice('⚠️ Boshqa data-translate inputlar topilmadi'); return; }
 
     isTranslating = true;
@@ -92,7 +67,7 @@
     try {
       const response = await chrome.runtime.sendMessage({
         type: 'TRANSLATE_ALL',
-        payload: { sourceLang, sourceText, targetLangs, accessToken },
+        payload: { sourceLang, sourceText, targetLangs },
       });
 
       if (!response.success) throw new Error(response.error);
