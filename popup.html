@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>MultiLang Translator</title>
@@ -11,7 +11,7 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      width: 260px;
+      width: 270px;
       background: var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -29,7 +29,7 @@
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 15px; flex-shrink: 0;
+      font-size: 15px;
     }
     .title { font-size: 13px; font-weight: 700; }
     .subtitle { font-size: 11px; color: var(--muted); margin-top: 1px; }
@@ -43,17 +43,35 @@
     .code-block {
       background: var(--surface2); border: 1px solid var(--border);
       border-radius: 7px; padding: 8px 10px;
-      font-family: 'Courier New', monospace; font-size: 11px;
-      color: var(--accent2); line-height: 1.75; white-space: pre;
+      font-family: monospace; font-size: 11px;
+      color: var(--accent2); line-height: 1.7;
     }
-    .c { color: var(--muted); }
-    .g { color: #4ade80; }
-    .p { color: var(--accent); }
 
     .tip {
-      font-size: 12px; color: var(--muted); line-height: 1.55;
+      font-size: 12px; color: var(--muted); line-height: 1.5;
     }
     .tip b { color: var(--text); }
+
+    select {
+      width: 100%;
+      background: var(--surface2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 6px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+
+    details {
+      margin-top: 8px;
+    }
+
+    summary {
+      cursor: pointer;
+      font-size: 12px;
+      color: var(--accent2);
+      margin-bottom: 6px;
+    }
 
     .footer {
       padding: 10px 14px;
@@ -66,30 +84,105 @@
     <div class="logo">🌐</div>
     <div>
       <div class="title">MultiLang Translator</div>
-      <div class="subtitle">MyMemory API • Bepul</div>
+      <div class="subtitle">Dev Tool</div>
     </div>
   </div>
 
   <div class="section">
-    <div class="section-title">Ishlatish</div>
-    <div class="code-block"><span class="c">&lt;!-- inputlarga qo'shing --&gt;</span>
-&lt;input <span class="p">data-translate</span>=<span class="g">"uz"</span> /&gt;
-&lt;input <span class="p">data-translate</span>=<span class="g">"en"</span> /&gt;
-&lt;input <span class="p">data-translate</span>=<span class="g">"ru"</span> /&gt;
-&lt;input <span class="p">data-translate</span>=<span class="g">"uzc"</span> /&gt;
-&lt;input <span class="p">data-translate</span>=<span class="g">"kk"</span> /&gt;</div>
+    <div class="section-title">Usage</div>
+    <div class="code-block">
+&lt;input data-translate="uz" /&gt;
+</div>
+<div class="code-block">
+&lt;input data-translate="en" /&gt;
+</div>
+<div class="code-block">
+&lt;input data-translate="ru" /&gt;
+</div>
   </div>
 
   <div class="section">
-    <div class="section-title">Qanday ishlaydi</div>
+    <div class="section-title">How it works</div>
     <div class="tip">
-      Har bir <b>data-translate</b> inputning ichida o'ng tomonda <b>🌐</b> tugmasi chiqadi.<br><br>
-      Tugmani bosing → o'sha tildan qolgan barcha tillarga tarjima bo'ladi.
+      A <b>🌐 button</b> appears inside every <b>data-translate</b> input.<br><br>
+      Click the button → text will be translated into all other languages.
     </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Available Languages</div>
+
+    <select>
+      <option value="uz">Uzbek Latin - uz</option>
+      <option value="uzc">Uzbek Cyrillic - uzc</option>
+      <option value="kaa">Karakalpak - kk</option>
+      <option value="en">English - en</option>
+      <option value="ru">Russian - ru</option>
+      <option value="de">German - de</option>
+      <option value="fr">French - fr</option>
+      <option value="es">Spanish - es</option>
+      <option value="it">Italian - it</option>
+      <option value="tr">Turkish - tr</option>
+      <option value="kk">Kazakh - kk</option>
+      <option value="ky">Kyrgyz - ky</option>
+      <option value="tg">Tajik - tg</option>
+      <option value="zh">Chinese - zh-CN</option>
+      <option value="ja">Japanese - ja</option>
+      <option value="ko">Korean - ko</option>
+      <option value="ar">Arabic - ar</option>
+      <option value="hi">Hindi - hi</option>
+      <option value="fa">Persian - fa</option>
+      <option value="th">Thai - th</option>
+      <option value="vi">Vietnamese - vi</option>
+      <option value="id">Indonesian - id</option>
+      <option value="ms">Malay - ms</option>
+      <option value="pt">Portuguese - pt</option>
+      <option value="pl">Polish - pl</option>
+      <option value="nl">Dutch - nl</option>
+      <option value="sv">Swedish - sv</option>
+      <option value="no">Norwegian - no</option>
+      <option value="da">Danish - da</option>
+      <option value="fi">Finnish - fi</option>
+      <option value="cs">Czech - cs</option>
+      <option value="sk">Slovak - sk</option>
+      <option value="hu">Hungarian - hu</option>
+      <option value="ro">Romanian - ro</option>
+      <option value="bg">Bulgarian - bg</option>
+      <option value="hr">Croatian - hr</option>
+      <option value="sr">Serbian - sr</option>
+      <option value="uk">Ukrainian - uk</option>
+      <option value="be">Belarusian - be</option>
+      <option value="lt">Lithuanian - lt</option>
+      <option value="lv">Latvian - lv</option>
+      <option value="et">Estonian - et</option>
+      <option value="el">Greek - el</option>
+      <option value="tk">Turkmen - tk</option>
+      <option value="az">Azerbaijani - az</option>
+      <option value="sw">Swahili - sw</option>
+      <option value="af">Afrikaans - af</option>
+      <option value="ca">Catalan - ca</option>
+      <option value="eu">Basque - eu</option>
+      <option value="gl">Galician - gl</option>
+    </select>
+
+    <details>
+      <summary>Show all language codes</summary>
+      <div class="code-block">
+uz, uzc, kk, ru, en  
+zh-CN, ja, ko, ar, hi, fa  
+tr, he, th, vi, id, ms  
+de, fr, es, it, pt, pl  
+nl, sv, no, da, fi, cs  
+sk, hu, ro, bg, hr, sr  
+uk, be, lt, lv, et, el  
+kk, ky, tg, tk, az  
+sw, af, ca, eu, gl
+      </div>
+    </details>
   </div>
 
   <div class="footer">
-    Google Translate + from-to.uz
+    Powered by Google Translate + from-to.uz
   </div>
 </body>
 </html>
