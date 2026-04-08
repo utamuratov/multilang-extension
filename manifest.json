@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "MultiLang Auto Translator",
-  "version": "1.3.1",
-  "description": "Auto-translate between multiple languages",
+  "name": "FormLingo Translate",
+  "version": "1.4.0",
+  "description": "Translate multiple input fields instantly with one click. Built for forms, CMS, and admin panels.",
   "permissions": [],
   "host_permissions": [
     "https://api.from-to.uz/*",
