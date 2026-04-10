@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "FormLingo Translate",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Translate multiple input fields instantly with one click. Built for forms, CMS, and admin panels.",
   "permissions": [],
   "host_permissions": [
@@ -25,9 +25,25 @@
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"],
-      "css": ["content.css"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "world": "ISOLATED"
+    },
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.main.js"
+      ],
+      "world": "MAIN"
     }
   ],
   "background": {
