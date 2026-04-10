@@ -7,6 +7,13 @@
   const WRAP_CLASS = '__ml_wrap';
   let isTranslating = false;
 
+  // ── Guruh kalitini olish ─────────────────────────────────────
+  // data-formlingo-field="description" → "description"
+  // yo'q bo'lsa → "__default__"
+  function getGroupKey(el) {
+    return el.getAttribute('data-formlingo-field') ?? '__default__';
+  }
+
   // ── Tugma yaratish ──────────────────────────────────────────
   function createButton(inputEl) {
     if (inputEl.parentElement?.classList.contains(WRAP_CLASS)) return;
@@ -50,15 +57,19 @@
     const sourceText = sourceEl.value?.trim();
     if (!sourceText) { showNotice('⚠️ Matn bo\'sh'); return; }
 
-    // Sahifadagi barcha data-translate inputlarni yig'ish
+    // Faqat bir xil guruhga mansub inputlarni yig'ish
+    const sourceGroup = getGroupKey(sourceEl);
     const inputsMap = {};
+
     document.querySelectorAll('[data-translate]').forEach(el => {
+      if (el.tagName !== 'INPUT' && el.tagName !== 'TEXTAREA') return;
+      if (getGroupKey(el) !== sourceGroup) return; // boshqa guruh — o'tkazib yuborish
       const l = el.getAttribute('data-translate');
       if (l) inputsMap[l] = el;
     });
 
     const targetLangs = Object.keys(inputsMap).filter(l => l !== sourceLang);
-    if (!targetLangs.length) { showNotice('⚠️ Boshqa data-translate inputlar topilmadi'); return; }
+    if (!targetLangs.length) { showNotice('⚠️ Guruhda boshqa data-translate inputlar topilmadi'); return; }
 
     isTranslating = true;
     setButtonState(sourceEl, 'loading');
