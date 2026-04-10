@@ -1,7 +1,7 @@
 (function () {
   'use strict';
-  if (window.__multiLangInjected) return;
-  window.__multiLangInjected = true;
+  if (window.__formLingoExtension) return;
+  window.__formLingoExtension = true;
 
   const BTN_CLASS = '__ml_btn';
   const WRAP_CLASS = '__ml_wrap';
