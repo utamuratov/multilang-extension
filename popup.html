@@ -2,193 +2,324 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>FormLingo Translate</title>
+  <title>FormLingo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0d0d14; --surface: #16161f; --surface2: #1e1e2a;
-      --border: #252535; --accent: #7c6af7; --accent2: #a78bfa;
-      --text: #e2e2ee; --muted: #5a5a7a; --success: #4ade80;
+      --bg: #0e0e16;
+      --surface: #15151f;
+      --surface2: #1c1c28;
+      --border: #24243a;
+      --accent: #7c6af7;
+      --accent2: #a78bfa;
+      --accent-glow: rgba(124,106,247,0.15);
+      --text: #e4e4f0;
+      --muted: #5c5c80;
+      --muted2: #8080a8;
+      --success: #4ade80;
+      --tag-bg: rgba(124,106,247,0.1);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      width: 270px;
+      width: 340px;
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 13px;
+      line-height: 1.5;
     }
-    .header {
-      padding: 14px;
+
+    /* ── Hero ── */
+    .hero {
+      padding: 20px 18px 16px;
+      background: linear-gradient(135deg, #0e0e16 0%, #151525 100%);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -30px; right: -30px;
+      width: 120px; height: 120px;
+      background: radial-gradient(circle, rgba(124,106,247,0.2), transparent 70%);
+      pointer-events: none;
+    }
+    .hero-top {
       display: flex;
       align-items: center;
       gap: 10px;
-      border-bottom: 1px solid var(--border);
+      margin-bottom: 10px;
     }
     .logo {
-      width: 30px; height: 30px;
+      width: 36px; height: 36px;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
-      border-radius: 8px;
+      border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 15px;
+      font-size: 18px; flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(124,106,247,0.35);
     }
-    .title { font-size: 13px; font-weight: 700; }
-    .subtitle { font-size: 11px; color: var(--muted); margin-top: 1px; }
+    .hero-title { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
+    .hero-sub { font-size: 11px; color: var(--muted2); margin-top: 1px; }
+    .hero-desc {
+      font-size: 12px;
+      color: var(--muted2);
+      line-height: 1.55;
+    }
 
-    .section { padding: 12px 14px; border-bottom: 1px solid var(--border); }
+    /* ── Section ── */
+    .section {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+    }
     .section-title {
-      font-size: 10px; font-weight: 700; letter-spacing: .8px;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
     }
 
-    .code-block {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 7px; padding: 8px 10px;
-      font-family: monospace; font-size: 11px;
-      color: var(--accent2); line-height: 1.7;
+    /* ── Steps ── */
+    .steps { display: flex; flex-direction: column; gap: 8px; }
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
     }
-
-    .tip {
-      font-size: 12px; color: var(--muted); line-height: 1.5;
-    }
-    .tip b { color: var(--text); }
-
-    select {
-      width: 100%;
-      background: var(--surface2);
-      color: var(--text);
-      border: 1px solid var(--border);
-      padding: 6px;
+    .step-num {
+      width: 20px; height: 20px;
+      background: var(--accent-glow);
+      border: 1px solid rgba(124,106,247,0.3);
       border-radius: 6px;
-      font-size: 12px;
-    }
-
-    details {
-      margin-top: 8px;
-    }
-
-    summary {
-      cursor: pointer;
-      font-size: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700;
       color: var(--accent2);
-      margin-bottom: 6px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .step-text { font-size: 12px; color: var(--muted2); line-height: 1.5; }
+    .step-text b { color: var(--text); font-weight: 600; }
+
+    /* ── Code blocks ── */
+    .code-wrap { display: flex; flex-direction: column; gap: 6px; }
+    .code-label {
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .code-block {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-family: 'Fira Code', monospace;
+      font-size: 11px;
+      line-height: 1.8;
+      white-space: pre;
+      overflow-x: auto;
+    }
+    .a { color: var(--accent); }
+    .g { color: var(--success); }
+    .c { color: var(--muted); }
+    .w { color: var(--text); }
+
+    /* ── Lang tags ── */
+    .lang-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+    .lang-tag {
+      padding: 3px 8px;
+      background: var(--tag-bg);
+      border: 1px solid rgba(124,106,247,0.2);
+      border-radius: 5px;
+      font-size: 11px;
+      color: var(--muted2);
+    }
+    .lang-tag.special {
+      border-color: rgba(74,222,128,0.25);
+      background: rgba(74,222,128,0.07);
+      color: #86efac;
     }
 
+    /* ── Powered by ── */
+    .powered {
+      display: flex;
+      gap: 8px;
+    }
+    .powered-item {
+      flex: 1;
+      padding: 8px 10px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      text-align: center;
+    }
+    .powered-name { font-size: 12px; font-weight: 600; color: var(--text); }
+    .powered-desc { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+    /* ── Footer ── */
     .footer {
-      padding: 10px 14px;
-      font-size: 11px; color: var(--muted); text-align: center;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .privacy {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .privacy-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 5px var(--success);
+    }
+    .version {
+      font-size: 10px;
+      color: var(--muted);
+      font-family: 'Fira Code', monospace;
     }
   </style>
 </head>
 <body>
-  <div class="header">
-    <div class="logo">🌐</div>
-    <div>
-      <div class="title">FormLingo Translate</div>
-      <div class="subtitle">Dev Tool</div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-top">
+      <div class="logo">🌐</div>
+      <div>
+        <div class="hero-title">FormLingo</div>
+        <div class="hero-sub">Translate Inputs Instantly</div>
+      </div>
+    </div>
+    <div class="hero-desc">
+      A lightweight developer tool for multilingual forms. Add <code style="background:var(--surface2);padding:1px 5px;border-radius:4px;font-family:'Fira Code',monospace;font-size:11px;color:var(--accent2)">data-translate</code> to any input — FormLingo handles the rest.
     </div>
   </div>
 
-  <div class="section">
-    <div class="section-title">Usage</div>
-    <div class="code-block">
-&lt;input data-translate="uz" /&gt;
-</div>
-<div class="code-block">
-&lt;input data-translate="en" /&gt;
-</div>
-  </div>
-
-  
-  <div class="section">
-    <div class="section-title">Grouped</div>
-    <small style="font-size: 10px; color: var(--muted);">add <code style="font-size: 10px; color: var(--accent2);">data-formlingo-field</code> attribute</small>
-    <div class="code-block">
-&lt;input data-translate="uz" data-formlingo-field="title" /&gt;
-</div>
-</div>
-
+  <!-- How it works -->
   <div class="section">
     <div class="section-title">How it works</div>
-    <div class="tip">
-      A <b>🌐 button</b> appears inside every <b>data-translate</b> input.<br><br>
-      Click the button → text will be translated into all other languages.
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">Add <b>data-translate="langCode"</b> to your inputs or textareas</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">A <b>🌐 button</b> appears inside each field automatically</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">Type in one field, click the button — <b>all other fields are translated instantly</b></div>
+      </div>
     </div>
   </div>
 
+  <!-- Usage -->
   <div class="section">
-    <div class="section-title">Available Languages</div>
+    <div class="section-title">Basic usage</div>
+    <div class="code-wrap">
+      <div class="code-block"><span class="c">&lt;!-- Simple: one group --&gt;</span>
+<span class="w">&lt;input</span> <span class="a">data-translate</span>=<span class="g">"en"</span> <span class="w">/&gt;</span>
+<span class="w">&lt;input</span> <span class="a">data-translate</span>=<span class="g">"ru"</span> <span class="w">/&gt;</span>
+<span class="w">&lt;input</span> <span class="a">data-translate</span>=<span class="g">"uz"</span> <span class="w">/&gt;</span>
+<span class="w">&lt;input</span> <span class="a">data-translate</span>=<span class="g">"kk"</span> <span class="w">/&gt;</span></div>
+    </div>
+  </div>
 
-    <select>
-      <option value="uz">Uzbek Latin - uz</option>
-      <option value="uzc">Uzbek Cyrillic - uzc</option>
-      <option value="kaa">Karakalpak - kk</option>
-      <option value="en">English - en</option>
-      <option value="ru">Russian - ru</option>
-      <option value="de">German - de</option>
-      <option value="fr">French - fr</option>
-      <option value="es">Spanish - es</option>
-      <option value="it">Italian - it</option>
-      <option value="tr">Turkish - tr</option>
-      <option value="kz">Kazakh - kz</option>
-      <option value="ky">Kyrgyz - ky</option>
-      <option value="tg">Tajik - tg</option>
-      <option value="zh">Chinese - zh-CN</option>
-      <option value="ja">Japanese - ja</option>
-      <option value="ko">Korean - ko</option>
-      <option value="ar">Arabic - ar</option>
-      <option value="hi">Hindi - hi</option>
-      <option value="fa">Persian - fa</option>
-      <option value="th">Thai - th</option>
-      <option value="vi">Vietnamese - vi</option>
-      <option value="id">Indonesian - id</option>
-      <option value="ms">Malay - ms</option>
-      <option value="pt">Portuguese - pt</option>
-      <option value="pl">Polish - pl</option>
-      <option value="nl">Dutch - nl</option>
-      <option value="sv">Swedish - sv</option>
-      <option value="no">Norwegian - no</option>
-      <option value="da">Danish - da</option>
-      <option value="fi">Finnish - fi</option>
-      <option value="cs">Czech - cs</option>
-      <option value="sk">Slovak - sk</option>
-      <option value="hu">Hungarian - hu</option>
-      <option value="ro">Romanian - ro</option>
-      <option value="bg">Bulgarian - bg</option>
-      <option value="hr">Croatian - hr</option>
-      <option value="sr">Serbian - sr</option>
-      <option value="uk">Ukrainian - uk</option>
-      <option value="be">Belarusian - be</option>
-      <option value="lt">Lithuanian - lt</option>
-      <option value="lv">Latvian - lv</option>
-      <option value="et">Estonian - et</option>
-      <option value="el">Greek - el</option>
-      <option value="tk">Turkmen - tk</option>
-      <option value="az">Azerbaijani - az</option>
-      <option value="sw">Swahili - sw</option>
-      <option value="af">Afrikaans - af</option>
-      <option value="ca">Catalan - ca</option>
-      <option value="eu">Basque - eu</option>
-      <option value="gl">Galician - gl</option>
-    </select>
+  <!-- Grouped usage -->
+  <div class="section">
+    <div class="section-title">Grouped fields</div>
+    <div class="step-text" style="margin-bottom:10px;color:var(--muted2)">
+      Use <code style="background:var(--surface2);padding:1px 5px;border-radius:4px;font-family:'Fira Code',monospace;font-size:11px;color:var(--accent2)">data-formlingo-field</code> to isolate translation groups — each group translates independently.
+    </div>
+    <div class="code-wrap">
+      <div class="code-block"><span class="c">&lt;!-- Group: "name" --&gt;</span>
+<span class="w">&lt;input</span> <span class="a">data-translate</span>=<span class="g">"en"</span> <span class="a">data-formlingo-field</span>=<span class="g">"name"</span> <span class="w">/&gt;</span>
+<span class="w">&lt;input</span> <span class="a">data-translate</span>=<span class="g">"ru"</span> <span class="a">data-formlingo-field</span>=<span class="g">"name"</span> <span class="w">/&gt;</span>
 
-    <details>
-      <summary>Show all language codes</summary>
-      <div class="code-block">
-uz, uzc, kk, ru, en  
-zh-CN, ja, ko, ar, hi, fa  
-tr, he, th, vi, id, ms  
-de, fr, es, it, pt, pl  
-nl, sv, no, da, fi, cs  
-sk, hu, ro, bg, hr, sr  
-uk, be, lt, lv, et, el  
-kz, ky, tg, tk, az  
-sw, af, ca, eu, gl
+<span class="c">&lt;!-- Group: "description" --&gt;</span>
+<span class="w">&lt;textarea</span> <span class="a">data-translate</span>=<span class="g">"en"</span> <span class="a">data-formlingo-field</span>=<span class="g">"description"</span><span class="w">&gt;&lt;/textarea&gt;</span>
+<span class="w">&lt;textarea</span> <span class="a">data-translate</span>=<span class="g">"ru"</span> <span class="a">data-formlingo-field</span>=<span class="g">"description"</span><span class="w">&gt;&lt;/textarea&gt;</span></div>
+    </div>
+  </div>
+
+  <!-- Languages -->
+  <div class="section">
+    <div class="section-title">Supported languages</div>
+    <div class="lang-grid">
+      <span class="lang-tag special">uz</span>
+      <span class="lang-tag special">uzc</span>
+      <span class="lang-tag special">kk</span>
+      <span class="lang-tag">ru</span>
+      <span class="lang-tag">en</span>
+      <span class="lang-tag">de</span>
+      <span class="lang-tag">fr</span>
+      <span class="lang-tag">es</span>
+      <span class="lang-tag">it</span>
+      <span class="lang-tag">tr</span>
+      <span class="lang-tag">ar</span>
+      <span class="lang-tag">zh</span>
+      <span class="lang-tag">ja</span>
+      <span class="lang-tag">ko</span>
+      <span class="lang-tag">hi</span>
+      <span class="lang-tag">fa</span>
+      <span class="lang-tag">pl</span>
+      <span class="lang-tag">uk</span>
+      <span class="lang-tag">az</span>
+      <span class="lang-tag">kz</span>
+      <span class="lang-tag">tg</span>
+      <span class="lang-tag">+20 more</span>
+    </div>
+    <div style="margin-top:8px;font-size:11px;color:var(--muted)">
+      🟢 <span style="color:#86efac">uz · uzc · kk</span> — powered by from-to.uz &nbsp;|&nbsp; others via Google Translate
+    </div>
+  </div>
+
+  <!-- Powered by -->
+  <div class="section">
+    <div class="section-title">Powered by</div>
+    <div class="powered">
+      <div class="powered-item">
+        <div class="powered-name">🔵 Google Translate</div>
+        <div class="powered-desc">40+ world languages</div>
       </div>
-    </details>
+      <div class="powered-item">
+        <div class="powered-name">🟣 from-to.uz</div>
+        <div class="powered-desc">Uzbek · Cyrillic · Karakalpak</div>
+      </div>
+    </div>
   </div>
 
+  <!-- Footer -->
   <div class="footer">
-    Powered by Google Translate + from-to.uz
+    <div class="privacy">
+      <div class="privacy-dot"></div>
+      No data stored or tracked
+    </div>
+    <div class="version">v1.4.1</div>
   </div>
+
 </body>
 </html>
