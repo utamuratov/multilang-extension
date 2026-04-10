@@ -123,6 +123,21 @@ These languages always route through `uz` as a pivot:
 
 For a full list see `GOOGLE_CODE` in `background.js`. Any valid Google Translate language code can be used.
 
+> [!IMPORTANT]
+> **`kk` vs `kz` — Kazakh language conflict**
+>
+> Google Translate uses `kk` as the language code for **Kazakh**. However, FormLingo reserves `kk` for **Karakalpak** (via from-to.uz).
+>
+> To avoid this conflict, use `kz` for Kazakh in your `data-translate` attributes — FormLingo internally maps `kz → kk` before sending requests to Google Translate.
+>
+> ```html
+> <!-- ✅ Correct: use kz for Kazakh -->
+> <input data-translate="kz" />
+>
+> <!-- ✅ Correct: use kk for Karakalpak -->
+> <input data-translate="kk" />
+> ```
+
 ---
 
 ## ⚙️ Translation Routing

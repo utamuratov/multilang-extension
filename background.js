@@ -31,6 +31,10 @@ async function transliterateFromTo(text, langFrom, langTo) {
 //  Google Translate
 // ============================================================
 async function translateGoogle(text, fromLang, toLang) {
+  // HACK: Google Translate Kazakh tili uchun kk kodini qabul qiladi. Bizda esa kk bu Karakalpak tili uchun ishlatiladi.
+  if (fromLang === "kz") fromLang = "kk";
+  if (toLang === "kz") toLang = "kk";
+  
   const url = `https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=${fromLang}&tl=${toLang}&q=${encodeURIComponent(text)}`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Google Translate: HTTP ${res.status}`);
@@ -54,7 +58,7 @@ const GOOGLE_CODE = {
   sk: "sk", hu: "hu", ro: "ro", bg: "bg", hr: "hr", sr: "sr",
   uk: "uk", be: "be", lt: "lt", lv: "lv", et: "et", el: "el",
   // Markaziy Osiyo
-  kk: "kk", ky: "ky", tg: "tg", tk: "tk", az: "az",
+  kk: "kk", ky: "ky", tg: "tg", tk: "tk", az: "az", kz: "kz",
   // Boshqalar
   sw: "sw", af: "af", ca: "ca", eu: "eu", gl: "gl",
 };
