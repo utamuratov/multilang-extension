@@ -17,11 +17,9 @@ A lightweight Chrome extension for developers building multilingual forms and ad
 
 ## 🚀 Installation
 
-1. Download or clone this repository
-2. Open Chrome and go to `chrome://extensions/`
-3. Enable **Developer mode** (top right)
-4. Click **Load unpacked** and select the extension folder
-5. The 🌐 icon will appear in your toolbar
+This is a Chrome extension for developers. You can install it by this link:
+
+🌐 https://chromewebstore.google.com/detail/formlingo-translate/igidcinlbghlmeoomnfcfkhjagehjoij?authuser=0&hl=en
 
 ---
 
@@ -82,7 +80,7 @@ if (window.__formLingoExtension) {
 > **Note:** Check this after `DOMContentLoaded` since content scripts inject after the DOM is ready.
 
 ```js
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   if (!window.__formLingoExtension) {
     showInstallBanner();
   }
@@ -95,31 +93,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
 ### Special (via [from-to.uz](https://from-to.uz))
 
-| Code | Language |
-|------|----------|
-| `uz` | Uzbek (Latin) |
-| `uzc` | Uzbek (Cyrillic) |
-| `kk` | Karakalpak (Latin) |
+| Code  | Language           |
+| ----- | ------------------ |
+| `uz`  | Uzbek (Latin)      |
+| `uzc` | Uzbek (Cyrillic)   |
+| `kk`  | Karakalpak (Latin) |
 
 These languages always route through `uz` as a pivot:
+
 - `kk` / `uzc` → `uz` → any other language
 - Any language → `uz` → `kk` / `uzc`
 
 ### Google Translate (40+ languages)
 
-| Code | Language | Code | Language |
-|------|----------|------|----------|
-| `en` | English | `de` | German |
-| `ru` | Russian | `fr` | French |
-| `tr` | Turkish | `es` | Spanish |
-| `az` | Azerbaijani | `it` | Italian |
-| `kz` | Kazakh | `pl` | Polish |
-| `ky` | Kyrgyz | `uk` | Ukrainian |
-| `tg` | Tajik | `ar` | Arabic |
-| `zh` | Chinese | `ja` | Japanese |
-| `ko` | Korean | `hi` | Hindi |
-| `fa` | Persian | `nl` | Dutch |
-| `sv` | Swedish | `pt` | Portuguese |
+| Code | Language    | Code | Language   |
+| ---- | ----------- | ---- | ---------- |
+| `en` | English     | `de` | German     |
+| `ru` | Russian     | `fr` | French     |
+| `tr` | Turkish     | `es` | Spanish    |
+| `az` | Azerbaijani | `it` | Italian    |
+| `kz` | Kazakh      | `pl` | Polish     |
+| `ky` | Kyrgyz      | `uk` | Ukrainian  |
+| `tg` | Tajik       | `ar` | Arabic     |
+| `zh` | Chinese     | `ja` | Japanese   |
+| `ko` | Korean      | `hi` | Hindi      |
+| `fa` | Persian     | `nl` | Dutch      |
+| `sv` | Swedish     | `pt` | Portuguese |
 
 For a full list see `GOOGLE_CODE` in `background.js`. Any valid Google Translate language code can be used.
 
@@ -190,15 +189,15 @@ To use a different API (DeepL, LibreTranslate, Azure, etc.), replace the relevan
 
 ```js
 async function translateGoogle(text, fromLang, toLang) {
-  const res = await fetch('https://api-free.deepl.com/v2/translate', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  const res = await fetch("https://api-free.deepl.com/v2/translate", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({
-      auth_key: 'YOUR_DEEPL_KEY',
+      auth_key: "YOUR_DEEPL_KEY",
       text,
       source_lang: fromLang.toUpperCase(),
       target_lang: toLang.toUpperCase(),
-    })
+    }),
   });
   return (await res.json()).translations[0].text;
 }
